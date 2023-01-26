@@ -1,33 +1,20 @@
 def acceleration_constraints(velocity, acceleration, p):
-    # accelerationConstraints - adjusts the acceleration based on acceleration
-    # constraints
-    #
-    # Syntax:  
-    #    accelerationConstraints(velocity,acceleration,p)
-    #
-    # Inputs:
-    #    acceleration - acceleration in driving direction
-    #    velocity - velocity in driving direction
-    #    p - longitudinal parameter structure
-    #
-    # Outputs:
-    #    acceleration - acceleration in driving direction
-    #
-    # Example: 
-    #
-    # Other m-files required: none
-    # Subfunctions: none
-    # MAT-files required: none
-    #
-    # See also: ---
+    """
+    accelerationConstraints - adjusts the acceleration based on acceleration constraints
 
-    # Author:       Matthias Althoff
-    # Written:      15-December-2017
-    # Last update:  ---
-    # Last revision:---
+    Inputs:
+        :param acceleration - acceleration in driving direction
+        :param velocity - velocity in driving direction
+        :params p - longitudinal parameter structure
 
-    # ------------- BEGIN CODE --------------
+    Outputs:
+        :return acceleration - acceleration in driving direction
 
+    Author: Matthias Althoff
+    Written: 15-December-2017
+    Last update: ---
+    Last revision: ---
+    """
     # positive acceleration limit
     if velocity > p.v_switch:
         posLimit = p.a_max * p.v_switch / velocity
@@ -44,4 +31,15 @@ def acceleration_constraints(velocity, acceleration, p):
 
     return acceleration
 
-    # ------------- END OF CODE --------------
+
+def jerk_dot_constraints(jerk_dot, jerk, p):
+    """
+    input constraints for jerk_dot: adjusts jerk_dot if jerk limit or input bounds are reached
+    """
+    if (jerk_dot < 0. and jerk <= -p.j_max) or (jerk_dot > 0. and jerk >= p.j_max):
+        # jerk limit reached
+        jerk_dot = 0.
+    elif abs(jerk_dot) >= p.j_dot_max:
+        # input bounds reached
+        jerk_dot = p.j_dot_max
+    return jerk_dot

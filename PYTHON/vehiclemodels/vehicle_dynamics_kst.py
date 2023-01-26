@@ -32,9 +32,6 @@ def vehicle_dynamics_kst(x, u_init, p):
     Last update:    21-October-2020
     Last revision:  ---
     """
-
-    # ------------- BEGIN CODE --------------
-
     # create equivalent kinematic single-track parameters
     l_wb = p.a + p.b        # wheel base
     l_wbt = p.trailer.l_wb  # wheel base trailer
@@ -51,7 +48,7 @@ def vehicle_dynamics_kst(x, u_init, p):
     # u1 = steering angle velocity of front wheels
     # u2 = longitudinal acceleration
 
-    u = []
+    u = list()
     # consider steering constraints
     u.append(steering_constraints(x[2], u_init[0], p.steering))  # different name uInit/u due to side effects of u
     # consider acceleration constraints
@@ -73,5 +70,3 @@ def vehicle_dynamics_kst(x, u_init, p):
          d_alpha]
 
     return f
-
-    # ------------- END OF CODE --------------

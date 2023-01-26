@@ -86,8 +86,10 @@ else
     F_zr = (m*g*lf) / (lr+lf);
     
     % compute front and rear tire speeds
-    u_wf = max(0, x(4)*cos(x(7))*cos(x(3)) + (x(4)*sin(x(7)) + lf*x(6))*sin(x(3)));
-    u_wr = max(0, x(4)*cos(x(7)));
+    % u_wf = max(0, x(4)*cos(x(7))*cos(x(3)) + (x(4)*sin(x(7)) + lf*x(6))*sin(x(3)));
+    % u_wr = max(0, x(4)*cos(x(7)));
+    u_wf = x(4)*cos(x(7))*cos(x(3)) + (x(4)*sin(x(7)) + lf*x(6))*sin(x(3));
+    u_wr = x(4)*cos(x(7));
     
     % compute longitudinal tire slip
     s_f = 1 - p.R_w*x(8)/u_wf;

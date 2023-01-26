@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.0] - 2022-10-28
+### Added
+* linearized kinematic single-track vehicle model
+
+### Changed
+* vehicle parameters are stored in Yaml files
+* omegaconf used to create configuration object from Yaml files (backwards compatible)
+
 ## [2.0.0] - 2020-12-07
 ### Added
 - Contains **version 2020a** of CommonRoad vehicle models
@@ -7,7 +15,7 @@
 - Additional vehicle parameter set for a semi trailer truck was added (vehicle ID:4)
 - A nonlinear single-track model with Pacejka tire forces was added (single-track drift model)
 
-## Changed
+### Changed
 - When switching from more complex models to the kinematic single-track model at low velocities, the correct reference point is now considered
 
 ### Fixed

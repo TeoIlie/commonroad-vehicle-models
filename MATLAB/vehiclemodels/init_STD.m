@@ -39,7 +39,7 @@ function x0 = init_STD(initState, p)
 
 % obtain initial states from input
 x0 = initState;
-x0(8) = x0(4)*cos(x0(7))/(cos(x0(3))*p.R_w);
+x0(8) = x0(4)*cos(x0(7))*cos(x0(3))/(p.R_w);
 x0(9) = x0(4)*cos(x0(7))/(p.R_w);
 
 %------------- END OF CODE --------------

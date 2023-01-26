@@ -49,13 +49,6 @@ u(2) = accelerationConstraints(x(4),u(2),p.longitudinal);
 
 % switch to kinematic model for small velocities
 if abs(x(4)) < 0.1
-    %wheelbase
-    %lwb = p.a + p.b; 
-    %system dynamics
-    %f(1:5,1) = vehicleDynamics_KS(x(1:5),u,p);
-    %f(6,1) = u(2)/lwb*tan(x(3)) + x(4)/(lwb*cos(x(3))^2)*u(1);
-    %f(7,1) = 0;
-    
     % use kinematic model with ref point at center of mass
     lwb = p.a + p.b;
     %system dynamics

@@ -59,14 +59,21 @@ If you want to contribute new vehicle models, you can create a merge request in 
 
 
 ## Changelog
-Compared to version 2019b the following features were added:
-* kinematic single-track model with on-axle trailer
-* vehicle parameter set for a semi-trailer truck (vehicle ID: 4)
-* single-track drift model: nonlinear single-track model with Pacejka tire forces
+Compared to version 2.0.0 the following features were added/changed:
+* linearized kinematic single-track model added as an additional vehicle model
+* vehicle parameters are stored in YAML-files
+* parameter configuration of vehicles are generated from YAML-files using [OmegaConf](https://omegaconf.readthedocs.io/en/2.2_branch/) (backwards compatible) 
 
 
 ## Referencing
 
-If you use CommonRoad, please cite
+If you use CommonRoad for your research, please cite [our paper](http://mediatum.ub.tum.de/doc/1379638/776321.pdf): 
 
-*[M. Althoff, M. Koschi, and S. Manzinger, ''CommonRoad: Composable Benchmarks for Motion Planning on Roads,'' in Proc. of the IEEE Intelligent Vehicles Symposium, 2017, pp. 719-726](http://mediatum.ub.tum.de/doc/1379638/776321.pdf)*.
+```
+@inproceedings{Althoff2017a,
+	author = {Althoff, Matthias and Koschi, Markus and Manzinger, Stefanie},
+	title = {CommonRoad: Composable benchmarks for motion planning on roads},
+	booktitle = {Proc. of the IEEE Intelligent Vehicles Symposium},
+	year = {2017},
+}
+```

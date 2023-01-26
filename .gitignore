@@ -213,6 +213,8 @@ TSWLatexianTemp*
 *.cache
 *pytest_cache/
 *.egg-info
+build/
+dist/
 
 # pytest
 .coverage
