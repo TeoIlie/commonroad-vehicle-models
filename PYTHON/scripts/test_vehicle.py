@@ -298,9 +298,17 @@ def accelerating():
 
 # run simulations *****************
 if __name__ == '__main__':
+    """
+    1. oversteer_understeer_STD() - Currently active (line 303). Tests the STD model under
+    coasting, braking, and accelerating conditions.
+    2. cornering_left(0.15, 0) - Line 301. Compares all models (MB, ST, KS, STD) during a
+    left turn.
+    3. braking() - Line 305. Compares MB and STD models during braking.
+    4. accelerating() - Line 306. Compares MB and STD models during acceleration.
+    """
     # cornering_left(0.15, 0)
     # oversteer_understeer_MB()
     # oversteer_understeer_STD()
-    oversteer_understeer_ST()
+    # oversteer_understeer_ST()
     # braking()
-    # accelerating()
+    accelerating()

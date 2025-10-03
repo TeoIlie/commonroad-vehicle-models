@@ -222,3 +222,4 @@ dist/
 *.idea
 *.DS_Store
 *.egg-info
+rd_env/

@@ -8,7 +8,9 @@ We provide implementation examples in MATLAB and Python, routines to convert ini
 
 To use vehicle models and parameters, add the folder `Python` to your PYTHONPATH. If you are using PyCharm, this can be set through File->Settings->Project Interpreter->Show all->Edit
 
+## Run 
 
+From root, to run `test_vehicle.py` do `PYTHONPATH=.:./PYTHON python PYTHON/scripts/test_vehicle.py`
 ## Contribute
 
 If you want to contribute new vehicle models, you can create a merge request or contact us via our [forum](https://commonroad.in.tum.de/forum/).
