@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug test_vehicle.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/PYTHON/scripts/test_vehicle.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/PYTHON"
+            },
+            "justMyCode": true
+        }
+    ]
+}
