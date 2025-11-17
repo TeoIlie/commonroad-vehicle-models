@@ -71,9 +71,7 @@ def vehicle_dynamics_linearized(x: List, u_init: List, p, ref_pos, ref_theta):
     # u1 = jerk_dot change of jerk
     # u2 = kappa_dot_dot curvature rate rate
 
-    assert len(ref_pos) == len(
-        ref_theta
-    ), "reference path position and orientation arrays must have the same length"
+    assert len(ref_pos) == len(ref_theta), "reference path position and orientation arrays must have the same length"
 
     # input constraints
     u = list()
@@ -93,9 +91,7 @@ def vehicle_dynamics_linearized(x: List, u_init: List, p, ref_pos, ref_theta):
 
     # interpolate theta_s from ref_theta at x_long[0]
     s_idx = np.argmax(ref_pos > s) - 1
-    theta_s = _interpolate_angle(
-        s, ref_pos[s_idx], ref_pos[s_idx + 1], ref_theta[s_idx], ref_theta[s_idx + 1]
-    )
+    theta_s = _interpolate_angle(s, ref_pos[s_idx], ref_pos[s_idx + 1], ref_theta[s_idx], ref_theta[s_idx + 1])
 
     # lateral dynamics
     f_lat = [v * x_lat[1] - v * theta_s, v * x_lat[2], x_lat[3], u[1]]

@@ -85,9 +85,7 @@ def vehicle_dynamics_mb(x, uInit, p):
 
     # consider steering constraints
     u = []
-    u.append(
-        steering_constraints(x[2], uInit[0], p.steering)
-    )  # different name u_init/u due to side effects of u
+    u.append(steering_constraints(x[2], uInit[0], p.steering))  # different name u_init/u due to side effects of u
     # consider acceleration constraints
     u.append(
         acceleration_constraints(x[3], uInit[1], p.longitudinal)
@@ -102,26 +100,14 @@ def vehicle_dynamics_mb(x, uInit, p):
     vel = math.sqrt(x[3] ** 2 + x[10] ** 2)
 
     # vertical tire forces
-    F_z_LF = (
-        x[16] + p.R_w * (math.cos(x[13]) - 1) - 0.5 * p.T_f * math.sin(x[13])
-    ) * p.K_zt
-    F_z_RF = (
-        x[16] + p.R_w * (math.cos(x[13]) - 1) + 0.5 * p.T_f * math.sin(x[13])
-    ) * p.K_zt
-    F_z_LR = (
-        x[21] + p.R_w * (math.cos(x[18]) - 1) - 0.5 * p.T_r * math.sin(x[18])
-    ) * p.K_zt
-    F_z_RR = (
-        x[21] + p.R_w * (math.cos(x[18]) - 1) + 0.5 * p.T_r * math.sin(x[18])
-    ) * p.K_zt
+    F_z_LF = (x[16] + p.R_w * (math.cos(x[13]) - 1) - 0.5 * p.T_f * math.sin(x[13])) * p.K_zt
+    F_z_RF = (x[16] + p.R_w * (math.cos(x[13]) - 1) + 0.5 * p.T_f * math.sin(x[13])) * p.K_zt
+    F_z_LR = (x[21] + p.R_w * (math.cos(x[18]) - 1) - 0.5 * p.T_r * math.sin(x[18])) * p.K_zt
+    F_z_RR = (x[21] + p.R_w * (math.cos(x[18]) - 1) + 0.5 * p.T_r * math.sin(x[18])) * p.K_zt
 
     # obtain individual tire speeds
-    u_w_lf = (x[3] + 0.5 * p.T_f * x[5]) * math.cos(x[2]) + (
-        x[10] + p.a * x[5]
-    ) * math.sin(x[2])
-    u_w_rf = (x[3] - 0.5 * p.T_f * x[5]) * math.cos(x[2]) + (
-        x[10] + p.a * x[5]
-    ) * math.sin(x[2])
+    u_w_lf = (x[3] + 0.5 * p.T_f * x[5]) * math.cos(x[2]) + (x[10] + p.a * x[5]) * math.sin(x[2])
+    u_w_rf = (x[3] - 0.5 * p.T_f * x[5]) * math.cos(x[2]) + (x[10] + p.a * x[5]) * math.sin(x[2])
     u_w_lr = x[3] + 0.5 * p.T_r * x[5]
     u_w_rr = x[3] - 0.5 * p.T_r * x[5]
 
@@ -158,56 +144,16 @@ def vehicle_dynamics_mb(x, uInit, p):
         alpha_LR = 0.0
         alpha_RR = 0.0
     else:
-        alpha_LF = (
-            math.atan(
-                (x[10] + p.a * x[5] - x[14] * (p.R_w - x[16]))
-                / (x[3] + 0.5 * p.T_f * x[5])
-            )
-            - x[2]
-        )
-        alpha_RF = (
-            math.atan(
-                (x[10] + p.a * x[5] - x[14] * (p.R_w - x[16]))
-                / (x[3] - 0.5 * p.T_f * x[5])
-            )
-            - x[2]
-        )
-        alpha_LR = math.atan(
-            (x[10] - p.b * x[5] - x[19] * (p.R_w - x[21])) / (x[3] + 0.5 * p.T_r * x[5])
-        )
-        alpha_RR = math.atan(
-            (x[10] - p.b * x[5] - x[19] * (p.R_w - x[21])) / (x[3] - 0.5 * p.T_r * x[5])
-        )
+        alpha_LF = math.atan((x[10] + p.a * x[5] - x[14] * (p.R_w - x[16])) / (x[3] + 0.5 * p.T_f * x[5])) - x[2]
+        alpha_RF = math.atan((x[10] + p.a * x[5] - x[14] * (p.R_w - x[16])) / (x[3] - 0.5 * p.T_f * x[5])) - x[2]
+        alpha_LR = math.atan((x[10] - p.b * x[5] - x[19] * (p.R_w - x[21])) / (x[3] + 0.5 * p.T_r * x[5]))
+        alpha_RR = math.atan((x[10] - p.b * x[5] - x[19] * (p.R_w - x[21])) / (x[3] - 0.5 * p.T_r * x[5]))
 
     # auxiliary suspension movement
-    z_SLF = (
-        (p.h_s - p.R_w + x[16] - x[11]) / math.cos(x[6])
-        - p.h_s
-        + p.R_w
-        + p.a * x[8]
-        + 0.5 * (x[6] - x[13]) * p.T_f
-    )
-    z_SRF = (
-        (p.h_s - p.R_w + x[16] - x[11]) / math.cos(x[6])
-        - p.h_s
-        + p.R_w
-        + p.a * x[8]
-        - 0.5 * (x[6] - x[13]) * p.T_f
-    )
-    z_SLR = (
-        (p.h_s - p.R_w + x[21] - x[11]) / math.cos(x[6])
-        - p.h_s
-        + p.R_w
-        - p.b * x[8]
-        + 0.5 * (x[6] - x[18]) * p.T_r
-    )
-    z_SRR = (
-        (p.h_s - p.R_w + x[21] - x[11]) / math.cos(x[6])
-        - p.h_s
-        + p.R_w
-        - p.b * x[8]
-        - 0.5 * (x[6] - x[18]) * p.T_r
-    )
+    z_SLF = (p.h_s - p.R_w + x[16] - x[11]) / math.cos(x[6]) - p.h_s + p.R_w + p.a * x[8] + 0.5 * (x[6] - x[13]) * p.T_f
+    z_SRF = (p.h_s - p.R_w + x[16] - x[11]) / math.cos(x[6]) - p.h_s + p.R_w + p.a * x[8] - 0.5 * (x[6] - x[13]) * p.T_f
+    z_SLR = (p.h_s - p.R_w + x[21] - x[11]) / math.cos(x[6]) - p.h_s + p.R_w - p.b * x[8] + 0.5 * (x[6] - x[18]) * p.T_r
+    z_SRR = (p.h_s - p.R_w + x[21] - x[11]) / math.cos(x[6]) - p.h_s + p.R_w - p.b * x[8] - 0.5 * (x[6] - x[18]) * p.T_r
 
     dz_SLF = x[17] - x[12] + p.a * x[9] + 0.5 * (x[7] - x[14]) * p.T_f
     dz_SRF = x[17] - x[12] + p.a * x[9] - 0.5 * (x[7] - x[14]) * p.T_f
@@ -247,18 +193,10 @@ def vehicle_dynamics_mb(x, uInit, p):
     F_x_RR = tireModel.formula_longitudinal_comb(s_rr, alpha_RR, F0_x_RR, p.tire)
 
     # compute lateral tire forces using the magic formula for combined slip
-    F_y_LF = tireModel.formula_lateral_comb(
-        s_lf, alpha_LF, gamma_LF, mu_y_LF, F_z_LF, F0_y_LF, p.tire
-    )
-    F_y_RF = tireModel.formula_lateral_comb(
-        s_rf, alpha_RF, gamma_RF, mu_y_RF, F_z_RF, F0_y_RF, p.tire
-    )
-    F_y_LR = tireModel.formula_lateral_comb(
-        s_lr, alpha_LR, gamma_LR, mu_y_LR, F_z_LR, F0_y_LR, p.tire
-    )
-    F_y_RR = tireModel.formula_lateral_comb(
-        s_rr, alpha_RR, gamma_RR, mu_y_RR, F_z_RR, F0_y_RR, p.tire
-    )
+    F_y_LF = tireModel.formula_lateral_comb(s_lf, alpha_LF, gamma_LF, mu_y_LF, F_z_LF, F0_y_LF, p.tire)
+    F_y_RF = tireModel.formula_lateral_comb(s_rf, alpha_RF, gamma_RF, mu_y_RF, F_z_RF, F0_y_RF, p.tire)
+    F_y_LR = tireModel.formula_lateral_comb(s_lr, alpha_LR, gamma_LR, mu_y_LR, F_z_LR, F0_y_LR, p.tire)
+    F_y_RR = tireModel.formula_lateral_comb(s_rr, alpha_RR, gamma_RR, mu_y_RR, F_z_RR, F0_y_RR, p.tire)
 
     # auxiliary movements for compliant joint equations
     delta_z_f = p.h_s - p.R_w + x[16] - x[11]
@@ -276,16 +214,8 @@ def vehicle_dynamics_mb(x, uInit, p):
     dot_delta_y_f = x[10] + p.a * x[5] - x[15]
     dot_delta_y_r = x[10] - p.b * x[5] - x[20]
 
-    delta_f = (
-        delta_z_f * math.sin(x[6])
-        - x[27] * math.cos(x[6])
-        - (p.h_raf - p.R_w) * math.sin(delta_phi_f)
-    )
-    delta_r = (
-        delta_z_r * math.sin(x[6])
-        - x[28] * math.cos(x[6])
-        - (p.h_rar - p.R_w) * math.sin(delta_phi_r)
-    )
+    delta_f = delta_z_f * math.sin(x[6]) - x[27] * math.cos(x[6]) - (p.h_raf - p.R_w) * math.sin(delta_phi_f)
+    delta_r = delta_z_r * math.sin(x[6]) - x[28] * math.cos(x[6]) - (p.h_rar - p.R_w) * math.sin(delta_phi_r)
 
     dot_delta_f = (
         (delta_z_f * math.cos(x[6]) + x[27] * math.sin(x[6])) * x[7]
@@ -305,41 +235,16 @@ def vehicle_dynamics_mb(x, uInit, p):
     F_RAR = delta_r * p.K_ras + dot_delta_r * p.K_rad
 
     # auxiliary suspension forces (bump stop neglected  squat/lift forces neglected)
-    F_SLF = (
-        p.m_s * g * p.b / (2 * (p.a + p.b))
-        - z_SLF * p.K_sf
-        - dz_SLF * p.K_sdf
-        + (x[6] - x[13]) * p.K_tsf / p.T_f
-    )
+    F_SLF = p.m_s * g * p.b / (2 * (p.a + p.b)) - z_SLF * p.K_sf - dz_SLF * p.K_sdf + (x[6] - x[13]) * p.K_tsf / p.T_f
 
-    F_SRF = (
-        p.m_s * g * p.b / (2 * (p.a + p.b))
-        - z_SRF * p.K_sf
-        - dz_SRF * p.K_sdf
-        - (x[6] - x[13]) * p.K_tsf / p.T_f
-    )
+    F_SRF = p.m_s * g * p.b / (2 * (p.a + p.b)) - z_SRF * p.K_sf - dz_SRF * p.K_sdf - (x[6] - x[13]) * p.K_tsf / p.T_f
 
-    F_SLR = (
-        p.m_s * g * p.a / (2 * (p.a + p.b))
-        - z_SLR * p.K_sr
-        - dz_SLR * p.K_sdr
-        + (x[6] - x[18]) * p.K_tsr / p.T_r
-    )
+    F_SLR = p.m_s * g * p.a / (2 * (p.a + p.b)) - z_SLR * p.K_sr - dz_SLR * p.K_sdr + (x[6] - x[18]) * p.K_tsr / p.T_r
 
-    F_SRR = (
-        p.m_s * g * p.a / (2 * (p.a + p.b))
-        - z_SRR * p.K_sr
-        - dz_SRR * p.K_sdr
-        - (x[6] - x[18]) * p.K_tsr / p.T_r
-    )
+    F_SRR = p.m_s * g * p.a / (2 * (p.a + p.b)) - z_SRR * p.K_sr - dz_SRR * p.K_sdr - (x[6] - x[18]) * p.K_tsr / p.T_r
 
     # auxiliary variables sprung mass
-    sumX = (
-        F_x_LR
-        + F_x_RR
-        + (F_x_LF + F_x_RF) * math.cos(x[2])
-        - (F_y_LF + F_y_RF) * math.sin(x[2])
-    )
+    sumX = F_x_LR + F_x_RR + (F_x_LF + F_x_RF) * math.cos(x[2]) - (F_y_LF + F_y_RF) * math.sin(x[2])
 
     sumN = (
         (F_y_LF + F_y_RF) * p.a * math.cos(x[2])
@@ -350,37 +255,23 @@ def vehicle_dynamics_mb(x, uInit, p):
         - (F_y_LR + F_y_RR) * p.b
     )
 
-    sumY_s = (F_RAF + F_RAR) * math.cos(x[6]) + (
-        F_SLF + F_SLR + F_SRF + F_SRR
-    ) * math.sin(x[6])
+    sumY_s = (F_RAF + F_RAR) * math.cos(x[6]) + (F_SLF + F_SLR + F_SRF + F_SRR) * math.sin(x[6])
 
     sumL = (
         0.5 * F_SLF * p.T_f
         + 0.5 * F_SLR * p.T_r
         - 0.5 * F_SRF * p.T_f
         - 0.5 * F_SRR * p.T_r
-        - F_RAF
-        / math.cos(x[6])
-        * (p.h_s - x[11] - p.R_w + x[16] - (p.h_raf - p.R_w) * math.cos(x[13]))
-        - F_RAR
-        / math.cos(x[6])
-        * (p.h_s - x[11] - p.R_w + x[21] - (p.h_rar - p.R_w) * math.cos(x[18]))
+        - F_RAF / math.cos(x[6]) * (p.h_s - x[11] - p.R_w + x[16] - (p.h_raf - p.R_w) * math.cos(x[13]))
+        - F_RAR / math.cos(x[6]) * (p.h_s - x[11] - p.R_w + x[21] - (p.h_rar - p.R_w) * math.cos(x[18]))
     )
 
-    sumZ_s = (F_SLF + F_SLR + F_SRF + F_SRR) * math.cos(x[6]) - (
-        F_RAF + F_RAR
-    ) * math.sin(x[6])
+    sumZ_s = (F_SLF + F_SLR + F_SRF + F_SRR) * math.cos(x[6]) - (F_RAF + F_RAR) * math.sin(x[6])
 
     sumM_s = (
         p.a * (F_SLF + F_SRF)
         - p.b * (F_SLR + F_SRR)
-        + (
-            (F_x_LF + F_x_RF) * math.cos(x[2])
-            - (F_y_LF + F_y_RF) * math.sin(x[2])
-            + F_x_LR
-            + F_x_RR
-        )
-        * (p.h_s - x[11])
+        + ((F_x_LF + F_x_RF) * math.cos(x[2]) - (F_y_LF + F_y_RF) * math.sin(x[2]) + F_x_LR + F_x_RR) * (p.h_s - x[11])
     )
 
     # auxiliary variables unsprung mass
@@ -388,32 +279,23 @@ def vehicle_dynamics_mb(x, uInit, p):
         0.5 * F_SRF * p.T_f
         - 0.5 * F_SLF * p.T_f
         - F_RAF * (p.h_raf - p.R_w)
-        + F_z_LF
-        * (p.R_w * math.sin(x[13]) + 0.5 * p.T_f * math.cos(x[13]) - p.K_lt * F_y_LF)
-        - F_z_RF
-        * (-p.R_w * math.sin(x[13]) + 0.5 * p.T_f * math.cos(x[13]) + p.K_lt * F_y_RF)
-        - ((F_y_LF + F_y_RF) * math.cos(x[2]) + (F_x_LF + F_x_RF) * math.sin(x[2]))
-        * (p.R_w - x[16])
+        + F_z_LF * (p.R_w * math.sin(x[13]) + 0.5 * p.T_f * math.cos(x[13]) - p.K_lt * F_y_LF)
+        - F_z_RF * (-p.R_w * math.sin(x[13]) + 0.5 * p.T_f * math.cos(x[13]) + p.K_lt * F_y_RF)
+        - ((F_y_LF + F_y_RF) * math.cos(x[2]) + (F_x_LF + F_x_RF) * math.sin(x[2])) * (p.R_w - x[16])
     )
 
     sumL_ur = (
         0.5 * F_SRR * p.T_r
         - 0.5 * F_SLR * p.T_r
         - F_RAR * (p.h_rar - p.R_w)
-        + F_z_LR
-        * (p.R_w * math.sin(x[18]) + 0.5 * p.T_r * math.cos(x[18]) - p.K_lt * F_y_LR)
-        - F_z_RR
-        * (-p.R_w * math.sin(x[18]) + 0.5 * p.T_r * math.cos(x[18]) + p.K_lt * F_y_RR)
+        + F_z_LR * (p.R_w * math.sin(x[18]) + 0.5 * p.T_r * math.cos(x[18]) - p.K_lt * F_y_LR)
+        - F_z_RR * (-p.R_w * math.sin(x[18]) + 0.5 * p.T_r * math.cos(x[18]) + p.K_lt * F_y_RR)
         - (F_y_LR + F_y_RR) * (p.R_w - x[21])
     )
 
-    sumZ_uf = (
-        F_z_LF + F_z_RF + F_RAF * math.sin(x[6]) - (F_SLF + F_SRF) * math.cos(x[6])
-    )
+    sumZ_uf = F_z_LF + F_z_RF + F_RAF * math.sin(x[6]) - (F_SLF + F_SRF) * math.cos(x[6])
 
-    sumZ_ur = (
-        F_z_LR + F_z_RR + F_RAR * math.sin(x[6]) - (F_SLR + F_SRR) * math.cos(x[6])
-    )
+    sumZ_ur = F_z_LR + F_z_RR + F_RAR * math.sin(x[6]) - (F_SLR + F_SRR) * math.cos(x[6])
 
     sumY_uf = (
         (F_y_LF + F_y_RF) * math.cos(x[2])
@@ -422,9 +304,7 @@ def vehicle_dynamics_mb(x, uInit, p):
         - (F_SLF + F_SRF) * math.sin(x[6])
     )
 
-    sumY_ur = (
-        (F_y_LR + F_y_RR) - F_RAR * math.cos(x[6]) - (F_SLR + F_SRR) * math.sin(x[6])
-    )
+    sumY_ur = (F_y_LR + F_y_RR) - F_RAR * math.cos(x[6]) - (F_SLR + F_SRR) * math.sin(x[6])
 
     # dynamics common with single-track model
     f = []  # init 'right hand side'
@@ -448,9 +328,7 @@ def vehicle_dynamics_mb(x, uInit, p):
         f_ks = vehicle_dynamics_ks_cog(x_ks, u, p)
         f = [f_ks[0], f_ks[1], f_ks[2], f_ks[3], f_ks[4]]
         # derivative of slip angle and yaw rate
-        d_beta = (p.b * u[0]) / (
-            lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2)
-        )
+        d_beta = (p.b * u[0]) / (lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2))
         dd_psi = (
             1
             / lwb
@@ -468,17 +346,11 @@ def vehicle_dynamics_mb(x, uInit, p):
         f.append(u[0])
         f.append(1 / p.m * sumX + x[5] * x[10])
         f.append(x[5])
-        f.append(
-            1
-            / (p.I_z - (p.I_xz_s) ** 2 / p.I_Phi_s)
-            * (sumN + p.I_xz_s / p.I_Phi_s * sumL)
-        )
+        f.append(1 / (p.I_z - (p.I_xz_s) ** 2 / p.I_Phi_s) * (sumN + p.I_xz_s / p.I_Phi_s * sumL))
 
     # remaining sprung mass dynamics
     f.append(x[7])
-    f.append(
-        1 / (p.I_Phi_s - (p.I_xz_s) ** 2 / p.I_z) * (p.I_xz_s / p.I_z * sumN + sumL)
-    )
+    f.append(1 / (p.I_Phi_s - (p.I_xz_s) ** 2 / p.I_z) * (p.I_xz_s / p.I_z * sumN + sumL))
     f.append(x[9])
     f.append(1 / p.I_y_s * sumM_s)
     f.append(1 / p.m_s * sumY_s - x[5] * x[3])
@@ -510,16 +382,8 @@ def vehicle_dynamics_mb(x, uInit, p):
     # wheel dynamics (p.T  new parameter for torque splitting)
     f.append(1 / p.I_y_w * (-p.R_w * F_x_LF + 0.5 * p.T_sb * T_B + 0.5 * p.T_se * T_E))
     f.append(1 / p.I_y_w * (-p.R_w * F_x_RF + 0.5 * p.T_sb * T_B + 0.5 * p.T_se * T_E))
-    f.append(
-        1
-        / p.I_y_w
-        * (-p.R_w * F_x_LR + 0.5 * (1 - p.T_sb) * T_B + 0.5 * (1 - p.T_se) * T_E)
-    )
-    f.append(
-        1
-        / p.I_y_w
-        * (-p.R_w * F_x_RR + 0.5 * (1 - p.T_sb) * T_B + 0.5 * (1 - p.T_se) * T_E)
-    )
+    f.append(1 / p.I_y_w * (-p.R_w * F_x_LR + 0.5 * (1 - p.T_sb) * T_B + 0.5 * (1 - p.T_se) * T_E))
+    f.append(1 / p.I_y_w * (-p.R_w * F_x_RR + 0.5 * (1 - p.T_sb) * T_B + 0.5 * (1 - p.T_se) * T_E))
 
     # negative wheel spin forbidden
     for iState in range(23, 27):

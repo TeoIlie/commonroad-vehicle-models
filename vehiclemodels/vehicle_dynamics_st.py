@@ -65,9 +65,7 @@ def vehicle_dynamics_st(x, uInit, p):
 
     # consider steering constraints
     u = list()
-    u.append(
-        steering_constraints(x[2], uInit[0], p.steering)
-    )  # different name u_init/u due to side effects of u
+    u.append(steering_constraints(x[2], uInit[0], p.steering))  # different name u_init/u due to side effects of u
     # consider acceleration constraints
     u.append(
         acceleration_constraints(x[3], uInit[1], p.longitudinal)
@@ -84,9 +82,7 @@ def vehicle_dynamics_st(x, uInit, p):
         f_ks = vehicle_dynamics_ks_cog(x_ks, u, p)
         f = [f_ks[0], f_ks[1], f_ks[2], f_ks[3], f_ks[4]]
         # derivative of slip angle and yaw rate
-        d_beta = (p.b * u[0]) / (
-            lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2)
-        )
+        d_beta = (p.b * u[0]) / (lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2))
         dd_psi = (
             1
             / lwb
@@ -110,28 +106,13 @@ def vehicle_dynamics_st(x, uInit, p):
             -mu
             * m
             / (x[3] * I * (lr + lf))
-            * (
-                lf ** 2 * C_Sf * (g * lr - u[1] * h)
-                + lr ** 2 * C_Sr * (g * lf + u[1] * h)
-            )
+            * (lf**2 * C_Sf * (g * lr - u[1] * h) + lr**2 * C_Sr * (g * lf + u[1] * h))
             * x[5]
-            + mu
-            * m
-            / (I * (lr + lf))
-            * (lr * C_Sr * (g * lf + u[1] * h) - lf * C_Sf * (g * lr - u[1] * h))
-            * x[6]
+            + mu * m / (I * (lr + lf)) * (lr * C_Sr * (g * lf + u[1] * h) - lf * C_Sf * (g * lr - u[1] * h)) * x[6]
             + mu * m / (I * (lr + lf)) * lf * C_Sf * (g * lr - u[1] * h) * x[2],
-            (
-                mu
-                / (x[3] ** 2 * (lr + lf))
-                * (C_Sr * (g * lf + u[1] * h) * lr - C_Sf * (g * lr - u[1] * h) * lf)
-                - 1
-            )
+            (mu / (x[3] ** 2 * (lr + lf)) * (C_Sr * (g * lf + u[1] * h) * lr - C_Sf * (g * lr - u[1] * h) * lf) - 1)
             * x[5]
-            - mu
-            / (x[3] * (lr + lf))
-            * (C_Sr * (g * lf + u[1] * h) + C_Sf * (g * lr - u[1] * h))
-            * x[6]
+            - mu / (x[3] * (lr + lf)) * (C_Sr * (g * lf + u[1] * h) + C_Sf * (g * lr - u[1] * h)) * x[6]
             + mu / (x[3] * (lr + lf)) * (C_Sf * (g * lr - u[1] * h)) * x[2],
         ]
 

@@ -52,9 +52,7 @@ def vehicle_dynamics_kst(x, u_init, p):
 
     u = list()
     # consider steering constraints
-    u.append(
-        steering_constraints(x[2], u_init[0], p.steering)
-    )  # different name uInit/u due to side effects of u
+    u.append(steering_constraints(x[2], u_init[0], p.steering))  # different name uInit/u due to side effects of u
     # consider acceleration constraints
     u.append(
         acceleration_constraints(x[3], u_init[1], p.longitudinal)

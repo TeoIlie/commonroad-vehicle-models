@@ -35,23 +35,13 @@ class VehicleParameters:
     m_ur: Optional[float] = None
 
     # axes distances
-    a: Optional[
-        float
-    ] = None  # distance from spring mass center of gravity to front axle [m]  LENA
-    b: Optional[
-        float
-    ] = None  # distance from spring mass center of gravity to rear axle [m]  LENB
+    a: Optional[float] = None  # distance from spring mass center of gravity to front axle [m]  LENA
+    b: Optional[float] = None  # distance from spring mass center of gravity to rear axle [m]  LENB
 
     # moments of inertia of sprung mass
-    I_Phi_s: Optional[
-        float
-    ] = None  # moment of inertia for sprung mass in roll [kg m^2]  IXS
-    I_y_s: Optional[
-        float
-    ] = None  # moment of inertia for sprung mass in pitch [kg m^2]  IYS
-    I_z: Optional[
-        float
-    ] = None  # moment of inertia for sprung mass in yaw [kg m^2]  IZZ
+    I_Phi_s: Optional[float] = None  # moment of inertia for sprung mass in roll [kg m^2]  IXS
+    I_y_s: Optional[float] = None  # moment of inertia for sprung mass in pitch [kg m^2]  IYS
+    I_z: Optional[float] = None  # moment of inertia for sprung mass in yaw [kg m^2]  IZZ
     I_xz_s: Optional[float] = None  # moment of inertia cross product [kg m^2]  IXZ
 
     # suspension parameters
@@ -73,9 +63,7 @@ class VehicleParameters:
     K_tsr: Optional[
         float
     ] = None  # auxiliary torsion roll stiffness per axle (normally negative) (rear) [N m/rad]  KTSR
-    K_rad: Optional[
-        float
-    ] = None  # damping rate at compliant compliant pin joint between M_s and M_u [N s/m]  KRADP
+    K_rad: Optional[float] = None  # damping rate at compliant compliant pin joint between M_s and M_u [N s/m]  KRADP
     K_zt: Optional[float] = None  # vertical spring rate of tire [N/m]  TSPRINGR
 
     h_cg: Optional[
@@ -86,19 +74,11 @@ class VehicleParameters:
 
     h_s: Optional[float] = None  # M_s center of gravity above ground [m]  HS
 
-    I_uf: Optional[
-        float
-    ] = None  # moment of inertia for unsprung mass about x-axis (front) [kg m^2]  IXUF
-    I_ur: Optional[
-        float
-    ] = None  # moment of inertia for unsprung mass about x-axis (rear) [kg m^2]  IXUR
-    I_y_w: Optional[
-        float
-    ] = None  # wheel inertia, from internet forum for 235/65 R 17 [kg m^2]
+    I_uf: Optional[float] = None  # moment of inertia for unsprung mass about x-axis (front) [kg m^2]  IXUF
+    I_ur: Optional[float] = None  # moment of inertia for unsprung mass about x-axis (rear) [kg m^2]  IXUR
+    I_y_w: Optional[float] = None  # wheel inertia, from internet forum for 235/65 R 17 [kg m^2]
 
-    K_lt: Optional[
-        float
-    ] = None  # lateral compliance rate of tire, wheel, and suspension, per tire [m/N]  KLT
+    K_lt: Optional[float] = None  # lateral compliance rate of tire, wheel, and suspension, per tire [m/N]  KLT
     R_w: Optional[
         float
     ] = None  # effective wheel/tire radius  chosen as tire rolling radius RR  taken from ADAMS documentation [m]
@@ -120,9 +100,7 @@ class VehicleParameters:
     trailer: TrailerParameters = field(default_factory=TrailerParameters)
 
 
-def setup_vehicle_parameters(
-    vehicle_id: int, dir_params: str = None
-) -> VehicleParameters:
+def setup_vehicle_parameters(vehicle_id: int, dir_params: str = None) -> VehicleParameters:
     """
     Creates a VehicleParameters object holding all vehicle parameters for a given vehicle type ID
     The parameters are read from the YAML-files in vehiclemodels/parameters or from the folder specified by dir_params
@@ -141,9 +119,7 @@ def setup_vehicle_parameters(
         path_root = Path(__file__).parent / "parameters"
 
     # load configurations from yaml files
-    conf_vehicle = OmegaConf.load(
-        path_root / f'{"parameters_vehicle"}{vehicle_id}.yaml'
-    )
+    conf_vehicle = OmegaConf.load(path_root / f'{"parameters_vehicle"}{vehicle_id}.yaml')
     conf_tires = OmegaConf.load(path_root / "parameters_tire.yaml")
 
     # create merged configuration and set as Read-only

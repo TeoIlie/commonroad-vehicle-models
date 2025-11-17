@@ -69,24 +69,12 @@ def vehicle_dynamics_std(x, u_init, p):
 
     # steering and acceleration constraints
     u = []
-    u.append(
-        steering_constraints(x[2], u_init[0], p.steering)
-    )  # different name due to side effects of u
-    u.append(
-        acceleration_constraints(x[3], u_init[1], p.longitudinal)
-    )  # different name due to side effect of u
+    u.append(steering_constraints(x[2], u_init[0], p.steering))  # different name due to side effects of u
+    u.append(acceleration_constraints(x[3], u_init[1], p.longitudinal))  # different name due to side effect of u
 
     # compute lateral tire slip angles
-    alpha_f = (
-        math.atan((x[3] * math.sin(x[6]) + x[5] * lf) / (x[3] * math.cos(x[6]))) - x[2]
-        if x[3] > v_min
-        else 0
-    )
-    alpha_r = (
-        math.atan((x[3] * math.sin(x[6]) - x[5] * lr) / (x[3] * math.cos(x[6])))
-        if x[3] > v_min
-        else 0
-    )
+    alpha_f = math.atan((x[3] * math.sin(x[6]) + x[5] * lf) / (x[3] * math.cos(x[6]))) - x[2] if x[3] > v_min else 0
+    alpha_r = math.atan((x[3] * math.sin(x[6]) - x[5] * lr) / (x[3] * math.cos(x[6]))) if x[3] > v_min else 0
 
     # compute vertical tire forces
     F_zf = m * (-u[1] * p.h_s + g * lr) / (lr + lf)
@@ -95,8 +83,7 @@ def vehicle_dynamics_std(x, u_init, p):
     # compute front and rear tire speeds
     u_wf = max(
         0,
-        x[3] * math.cos(x[6]) * math.cos(x[2])
-        + (x[3] * math.sin(x[6]) + p.a * x[5]) * math.sin(x[2]),
+        x[3] * math.cos(x[6]) * math.cos(x[2]) + (x[3] * math.sin(x[6]) + p.a * x[5]) * math.sin(x[2]),
     )
     u_wr = max(0, x[3] * math.cos(x[6]))
 
@@ -137,40 +124,22 @@ def vehicle_dynamics_std(x, u_init, p):
     d_v = (
         1
         / m
-        * (
-            -F_yf * math.sin(x[2] - x[6])
-            + F_yr * math.sin(x[6])
-            + F_xr * math.cos(x[6])
-            + F_xf * math.cos(x[2] - x[6])
-        )
+        * (-F_yf * math.sin(x[2] - x[6]) + F_yr * math.sin(x[6]) + F_xr * math.cos(x[6]) + F_xf * math.cos(x[2] - x[6]))
     )
-    dd_psi = (
-        1 / I * (F_yf * math.cos(x[2]) * lf - F_yr * lr + F_xf * math.sin(x[2]) * lf)
-    )
+    dd_psi = 1 / I * (F_yf * math.cos(x[2]) * lf - F_yr * lr + F_xf * math.sin(x[2]) * lf)
     d_beta = (
         -x[5]
         + 1
         / (m * x[3])
-        * (
-            F_yf * math.cos(x[2] - x[6])
-            + F_yr * math.cos(x[6])
-            - F_xr * math.sin(x[6])
-            + F_xf * math.sin(x[2] - x[6])
-        )
+        * (F_yf * math.cos(x[2] - x[6]) + F_yr * math.cos(x[6]) - F_xr * math.sin(x[6]) + F_xf * math.sin(x[2] - x[6]))
         if x[3] > v_min
         else 0
     )
 
     # wheel dynamics (negative wheel spin forbidden)
-    d_omega_f = (
-        1 / p.I_y_w * (-p.R_w * F_xf + p.T_sb * T_B + p.T_se * T_E) if x[7] >= 0 else 0
-    )
+    d_omega_f = 1 / p.I_y_w * (-p.R_w * F_xf + p.T_sb * T_B + p.T_se * T_E) if x[7] >= 0 else 0
     x[7] = max(0, x[7])
-    d_omega_r = (
-        1 / p.I_y_w * (-p.R_w * F_xr + (1 - p.T_sb) * T_B + (1 - p.T_se) * T_E)
-        if x[8] >= 0
-        else 0
-    )
+    d_omega_r = 1 / p.I_y_w * (-p.R_w * F_xr + (1 - p.T_sb) * T_B + (1 - p.T_se) * T_E) if x[8] >= 0 else 0
     x[8] = max(0, x[8])
 
     # *** Mix with kinematic model at low speeds ***
@@ -180,9 +149,7 @@ def vehicle_dynamics_std(x, u_init, p):
     x_ks = [x[0], x[1], x[2], x[3], x[4]]
     f_ks = vehicle_dynamics_ks_cog(x_ks, u, p)
     # derivative of slip angle and yaw rate (kinematic)
-    d_beta_ks = (p.b * u[0]) / (
-        lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2)
-    )
+    d_beta_ks = (p.b * u[0]) / (lwb * math.cos(x[2]) ** 2 * (1 + (math.tan(x[2]) ** 2 * p.b / lwb) ** 2))
     dd_psi_ks = (
         1
         / lwb
