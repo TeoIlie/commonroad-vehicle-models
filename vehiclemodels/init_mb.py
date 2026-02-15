@@ -77,8 +77,8 @@ def init_mb(init_state, p):
     g = 9.81  # [m/s^2]
 
     # auxiliary initial states
-    F0_z_f = p.m_s * g * p.b / ((p.a + p.b)) + p.m_uf * g
-    F0_z_r = p.m_s * g * p.a / ((p.a + p.b)) + p.m_ur * g
+    F0_z_f = p.m_s * g * p.b / (p.a + p.b) + p.m_uf * g
+    F0_z_r = p.m_s * g * p.a / (p.a + p.b) + p.m_ur * g
 
     # sprung mass states
     x0 = []  # init initial state vector
