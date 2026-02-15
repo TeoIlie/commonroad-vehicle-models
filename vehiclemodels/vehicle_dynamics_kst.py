@@ -1,9 +1,9 @@
 import math
 
-from commonroad.vehiclemodels.utils.steering_constraints import steering_constraints
 from commonroad.vehiclemodels.utils.acceleration_constraints import (
     acceleration_constraints,
 )
+from commonroad.vehiclemodels.utils.steering_constraints import steering_constraints
 
 __author__ = "Gerald Würsching"
 __copyright__ = "TUM Cyber-Physical Systems Group"

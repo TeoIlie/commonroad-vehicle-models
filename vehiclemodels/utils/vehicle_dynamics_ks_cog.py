@@ -1,8 +1,9 @@
+import math
+
 from commonroad.vehiclemodels.utils.acceleration_constraints import (
     acceleration_constraints,
 )
 from commonroad.vehiclemodels.utils.steering_constraints import steering_constraints
-import math
 
 
 def vehicle_dynamics_ks_cog(x, u_init, p):

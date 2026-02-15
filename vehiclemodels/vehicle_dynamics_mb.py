@@ -1,13 +1,13 @@
 import math
 
-from commonroad.vehiclemodels.utils.steering_constraints import steering_constraints
+import commonroad.vehiclemodels.utils.tire_model as tireModel
 from commonroad.vehiclemodels.utils.acceleration_constraints import (
     acceleration_constraints,
 )
+from commonroad.vehiclemodels.utils.steering_constraints import steering_constraints
 from commonroad.vehiclemodels.utils.vehicle_dynamics_ks_cog import (
     vehicle_dynamics_ks_cog,
 )
-import commonroad.vehiclemodels.utils.tire_model as tireModel
 
 __author__ = "Matthias Althoff"
 __copyright__ = "TUM Cyber-Physical Systems Group"

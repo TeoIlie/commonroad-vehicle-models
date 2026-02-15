@@ -1,12 +1,12 @@
 import math
 from typing import List
+
 import numpy as np
 
+from commonroad.vehiclemodels.utils.acceleration_constraints import jerk_dot_constraints
 from commonroad.vehiclemodels.utils.steering_constraints import (
     kappa_dot_dot_constraints,
 )
-from commonroad.vehiclemodels.utils.acceleration_constraints import jerk_dot_constraints
-
 
 __author__ = "Gerald Würsching, Xiao Wang"
 __copyright__ = "TUM Cyber-Physical Systems Group"

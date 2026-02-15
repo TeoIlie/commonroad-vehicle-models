@@ -1,7 +1,6 @@
-from omegaconf import DictConfig
 from commonroad.vehiclemodels.vehicle_parameters import (
-    setup_vehicle_parameters,
     VehicleParameters,
+    setup_vehicle_parameters,
 )
 
 

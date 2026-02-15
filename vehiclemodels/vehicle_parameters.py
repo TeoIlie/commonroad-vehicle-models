@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from typing import Optional
 from pathlib import Path
+from typing import Optional
+
 from omegaconf import OmegaConf
 
 from commonroad.vehiclemodels.utils.longitudinal_parameters import (
